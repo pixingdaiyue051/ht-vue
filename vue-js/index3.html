@@ -1,0 +1,36 @@
+<!<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>v-if,v-show,v-for</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="./vue.js"></script>
+	</head>
+	<body>
+		<div id="root">
+			<p style="color: red;">1</p>
+			<input value="content" v-if="isShow" />
+			<input value="content" v-show="isShow" />
+			<input type="button" value="toggle" @click="toggle" />
+			<ul>
+				<li v-for="(item,index) of listToShow" :key="index">{{index}}-{{item}}</li>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: "#root",
+				data: {
+					isShow: true,
+					listToShow: ['ht', 'ok', 'plt'],
+				},
+				methods: {
+					toggle() {
+						this.isShow = !this.isShow;
+					}
+				}
+			});
+			console.log(vm.$data);
+		</script>
+	</body>
+</html>

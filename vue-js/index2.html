@@ -1,0 +1,40 @@
+<!<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>computed,watch</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script src="./vue.js"></script>
+</head>
+<body>
+	<div id="root">
+		<p style="color: red;">1</p>
+		<input v-model="firstName"/>
+		<input v-model="lastName"/>
+		<div>{{fullName}}</div>
+		<div>{{count}}</div>
+	</div>
+	
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#root",
+			data:{
+				firstName:"h",
+				lastName:"t",
+				count:0
+			},
+			computed:{
+				fullName(){
+					return this.firstName + ' ' + this.lastName;
+				}
+			},
+			watch:{
+				fullName(){
+					this.count++;
+				}
+			}
+		});
+		console.log(vm);
+	</script>
+</body>
+</html>
