@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>otp</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="../../static/jquery/jquery.min-3.4.1.js"></script>
+		<script type="text/javascript" src="../../static/vue/vue.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="../../static/css/common_style.css"/>
+	</head>
+	<body id="root">
+		<div>
+			<input type="text" id="tel" placeholder="请输入手机号"/>
+			<input type="button" id="btnSub" value="提交" @click="btnSub"/>
+		</div>
+		<p id="error_info">{{info}}</p>
+	</body>
+	<script>
+		var app = new Vue({
+			el: "#root",
+			data: {
+				info: '',
+			},
+			methods: {
+				btnSub() {
+					this.info = '';
+					let tel = $("#tel").val().trim();
+					if (!tel) {
+						this.info = '手机号不为空';
+						return false;
+					}
+					let matched = /^(13[0-9]|14[5,7]|15[0-3,5-9]|17[0,3,5-8]|18[0-9]|166|198|199|147)\d{8}$/.test(tel);
+					if (!matched) {
+						this.info = '手机号码不正确';
+						return false;
+					}
+					$.ajax({
+						type: "POST",
+						url: "http://127.0.0.1:8511/outter/opt/phone/" + tel,
+						success: function (res) {
+							if (res.success) {
+								this.info = res.data;
+							} else {
+								this.info = res.msg;
+							}
+						}
+					})
+				},
+			}
+		});
+	</script>
+</html>
