@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>index</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <script type="text/javascript" src="js/jquery.min-3.4.1.js"></script>
+        <script type="text/javascript" src="js/enc/crypto.min.js"></script>
+        <script type="text/javascript" src="js/enc/jsencrypt.min.js"></script>
+        <script type="text/javascript" src="js/enc/aes_rsa.js"></script>
+    </head>
+    <body>
+        <h3>0000000000000000000000000000000</h3>
+    </body>
+    <script type="text/javascript">
+        //字符串
+        let text = "Do not go aestle into that good night";
+
+        // key
+        let aesKey = aesUtil.genKey();
+        // key加密
+        let ciphertext = aesUtil.encrypt(text,aesKey);
+        // key解密
+        let plaintext = aesUtil.decrypt(ciphertext,aesKey);
+
+        console.log("key:",aesKey);
+        console.log("加密前:",text);
+        console.log("加密后:", ciphertext);
+        console.log("解密后:",plaintext);
+
+
+
+        // 密钥对
+        let keyPair = rsaUtil.genKeyPair();
+        // 公钥加密
+        let ciphertext1 = rsaUtil.encrypt(text,keyPair.publicKey);
+        // 私钥解密
+        let plaintext1 = rsaUtil.decrypt(ciphertext1,keyPair.privateKey);
+
+        console.log("公钥:",keyPair.publicKey);
+        console.log("秘钥:",keyPair.privateKey);
+        console.log("加密前:", text);
+        console.log("加密后:", ciphertext1);
+        console.log("解密后:", plaintext1);
+        
+    </script>
+</html>

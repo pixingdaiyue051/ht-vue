@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>index</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <script type="text/javascript" src="js/jquery.min-3.4.1.js"></script>
+		<script type="text/javascript" src="js/vue/vue.js"></script>
+	</head>
+	<body>
+		<div id="root">
+			<h1>{{msg}}</h1>
+			<h2 v-text="num"></h2>
+			<h3 v-html="con"></h3>
+			<p v-on:click="pclick">{{pmsg}}</p>
+			<p @click="pclick">{{pmsg}}</p>
+			<p v-bind:title="title">this is a test sample</p>
+			<p :title="title">this is a test sample</p>
+			
+			<p style="color: red;">1</p>
+			<input :value="content1" @change="contentChange"/>
+			<div>{{content1}}</div>
+			<p style="color: red;">2</p>
+			<input v-model="content2"/>
+			<div>{{content2}}</div>
+		</div>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:"#root",
+				data:{
+					msg:'hello world',
+					num:218,
+					con:"<span>319</span>",
+					pmsg:'click to change',
+					title:'this is a test sample',
+					content1:"this is a test input",
+					content2:"hello world",
+				},
+				methods:{
+					pclick(){
+						this.pmsg= this.pmsg == 'click to change'?'already changed':'click to change';
+					},
+					contentChange(val){
+						this.content1= val;
+					}
+				}
+			});
+			console.log(vm.$data);
+			
+			let t = new Date();
+			console.log(t.toTimeString());
+			console.log(t.toDateString());
+			console.log(t.toLocaleTimeString());
+			console.log(t.toLocaleDateString());
+			console.log(t.toUTCString());
+			console.log(t.toLocaleString());
+			
+		</script>
+	</body>
+</html>

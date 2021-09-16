@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>index</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <script type="text/javascript" src="js/jquery.min-3.4.1.js"></script>
+        <script type="text/javascript" src="js/enc/crypto.min.js"></script>
+        <script type="text/javascript" src="js/enc/jsencrypt.min.js"></script>
+        <script type="text/javascript" src="js/enc/aes_rsa.js"></script>
+    </head>
+    <body>
+        <h3>0000000000000000000000000000000</h3>
+    </body>
+    <script type="text/javascript">
+        // 0、后端加密,前端解密
+        // 1、前端后端各自交互对方的RSA公钥(可以直接传明文公钥也可以对公钥加密后交换)
+        // 2、后端使用自己的AESKey加密要传输的数据,再使用前端的RSA公钥加密自己的AESKey
+        // 3、后端将加密后的数据和加密后的AESKey都传给前端
+        // 4、前端获取的后端加密后的AESKey,先用及的RSA私钥解密,再使用解密后的AESKey解密后端传输的加密数据,得到正确的明文数据
+
+        // 密钥对
+        let keyPair = rsaUtil.genKeyPair();
+
+        // $.ajax({
+        //      type: "POST",
+        //      url: "http://127.0.0.1:8001/admin/keypair/exchange",
+        //      data: {
+        //         "publicKey": keyPair.publicKey,
+        //      },
+        //      dataType: "json",
+        //      success: function(res1){
+        //         console.log("后台公钥:", res1.data)
+        //         $.ajax({
+        //              type: "POST",
+        //              url: "http://127.0.0.1:8001/demo/encrypt",
+        //              dataType: "json",
+        //              success: function(res){
+        //                 let l1 = new Date().getTime();
+        //                 console.log(res);
+        //                 let key = rsaUtil.decrypt(res.cipher,keyPair.privateKey);
+        //                 let d = aesUtil.decrypt(res.data,key);
+        //                 console.log(d);
+        //                 let l2 = new Date().getTime();
+        //                 console.log(l2-l1);
+        //              }
+        //          });
+        //      }
+        //  });
+
+
+        // 0、前端加密,后端解密
+        // 1、前端后端各自交互对方的RSA公钥(可以直接传明文公钥也可以对公钥加密后交换)
+        // 2、前端使用自己的AESKey加密要传输的数据,再使用后端的RSA公钥加密自己的AESKey
+        // 3、前端将加密后的数据和加密后的AESKey都传给后端
+        // 4、后端获取的前端加密后的AESKey,先用及的RSA私钥解密,再使用解密后的AESKey解密后端传输的加密数据,得到正确的明文数据
+
+        // 明文字符串
+        let params = {
+            "criminalNoLike": "44234",
+            "nameLike": "42445fs",
+            "username": "52f",
+            "createTimeFrom": "2020-01-01",
+            "createTimeTo": "2020-01-01"
+        };
+        // key
+        let aesKey = aesUtil.genKey();
+        
+        // $.ajax({
+        //      type: "POST",
+        //      url: "http://127.0.0.1:8001/admin/keypair/exchange",
+        //      data: {
+        //         "publicKey": keyPair.publicKey,
+        //      },
+        //      dataType: "json",
+        //      success: function(res1){
+        //         console.log("后台公钥:", res1.data)
+        //         $.ajax({
+        //              type: "POST",
+        //              contentType: "application/json;charset=utf-8",
+        //              url: "http://127.0.0.1:8001/demo/decrypt",
+        //              data: JSON.stringify({
+        //                 "username": aesUtil.encrypt(params, aesKey),
+        //                 "userPhone": rsaUtil.encrypt(aesKey, res1.data)
+        //              }),
+        //              dataType: "json",
+        //              success: function(res){
+        //                 console.log(res);
+        //              }
+        //          });
+        //      }
+        //  });
+        
+    </script>
+</html>
