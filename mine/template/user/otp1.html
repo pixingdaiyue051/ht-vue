@@ -4,16 +4,16 @@
 		<meta charset="UTF-8" />
 		<title>otp</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<script type="text/javascript" src="js/jquery.min-3.4.1.js"></script>
-		<script type="text/javascript" src="js/vue/vue.min.js"></script>
-		<link type="text/css" rel="stylesheet" href="css/common_style.css"/>
+		<script type="text/javascript" src="/js/jquery.min-3.4.1.js"></script>
+		<script type="text/javascript" src="/js/vue/vue.min.js"></script>
+		<link type="text/css" rel="stylesheet" href="/css/common_style.css"/>
 	</head>
-	<body id="root">
-		<div>
+	<body>
+		<div id="root">
 			<input type="text" id="tel" placeholder="请输入手机号"/>
 			<input type="button" id="btnSub" value="提交" @click="btnSub"/>
+			<p id="error_info">{{info}}</p>
 		</div>
-		<p id="error_info">{{info}}</p>
 	</body>
 	<script>
 		var app = new Vue({
