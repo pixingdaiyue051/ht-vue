@@ -11,37 +11,113 @@
     </head>
     <body>
         <h3>0000000000000000000000000000000</h3>
+        <div>
+            <input id="_ipt" type="button" value="公钥"/>
+            <input id="_ipt1" type="button" value="解密"/>
+            <input id="_ipt2" type="button" value="加密"/>
+            <input id="_ipt_test" type="button" value="测试"/>
+        </div>
     </body>
     <script type="text/javascript">
-        //字符串
-        let text = "Do not go aestle into that good night";
-
-        // key
-        let aesKey = aesUtil.genKey();
-        // key加密
-        let ciphertext = aesUtil.encrypt(text,aesKey);
-        // key解密
-        let plaintext = aesUtil.decrypt(ciphertext,aesKey);
-
-        console.log("key:",aesKey);
-        console.log("加密前:",text);
-        console.log("加密后:", ciphertext);
-        console.log("解密后:",plaintext);
-
-
 
         // 密钥对
         let keyPair = rsaUtil.genKeyPair();
-        // 公钥加密
-        let ciphertext1 = rsaUtil.encrypt(text,keyPair.publicKey);
-        // 私钥解密
-        let plaintext1 = rsaUtil.decrypt(ciphertext1,keyPair.privateKey);
+        let hpk = '';
 
-        console.log("公钥:",keyPair.publicKey);
-        console.log("秘钥:",keyPair.privateKey);
-        console.log("加密前:", text);
-        console.log("加密后:", ciphertext1);
-        console.log("解密后:", plaintext1);
-        
+        $(() => {
+            $("#_ipt").click(() => {
+                $.ajax({
+                     type: "POST",
+                     url: "http://127.0.0.1:8081/middle/admin/keypair/exchange",
+                     data: {
+                        "publicKey": keyPair.publicKey,
+                     },
+                     dataType: "json",
+                     success: function(res1){
+                        console.log("前端公钥:", keyPair.publicKey);
+                        console.log("后端公钥:", res1.data);
+                        hpk = res1.data;
+                     }
+                 });
+            });
+
+            $("#_ipt1").click(() => {
+                $.ajax({
+                     type: "POST",
+                     url: "http://127.0.0.1:8081/middle/demo/encrypt",
+                     dataType: "json",
+                     success: function(res){
+                        let l1 = new Date().getTime();
+                        console.log(res.cipher);
+                        let key = rsaUtil.decrypt(res.cipher);
+                        let d = aesUtil.decrypt(res.data,key);
+                        console.log(d);
+                        let l2 = new Date().getTime();
+                        console.log(l2-l1);
+                     }
+                 });
+            });
+
+            $("#_ipt2").click(() => {
+                // 明文字符串
+                let params = {
+                    "criminalNoLike": "44234",
+                    "nameLike": "42445fs",
+                    "username": "52f",
+                    "createTimeFrom": "2020-01-01",
+                    "createTimeTo": "2020-01-01"
+                };
+                // key
+                let aesKey = aesUtil.genKey();
+                console.log(aesKey);
+
+                $.ajax({
+                     type: "POST",
+                     contentType: "application/json;charset=utf-8",
+                     url: "http://127.0.0.1:8081/middle/demo/decrypt",
+                     data: JSON.stringify({
+                        "username": aesUtil.encrypt(params, aesKey),
+                        "userPhone": rsaUtil.encrypt(aesKey, hpk)
+                     }),
+                     dataType: "json",
+                     success: function(res){
+                        console.log(res);
+                     }
+                 });
+            });
+
+            $("#_ipt_test").click(() => {
+                //字符串
+                let text = "Do not go aestle into that good night";
+
+                // key
+                let aesKey = aesUtil.genKey();
+                // key加密
+                let ciphertext = aesUtil.encrypt(text,aesKey);
+                // key解密
+                let plaintext = aesUtil.decrypt(ciphertext,aesKey);
+
+                console.log("key:",aesKey);
+                console.log("加密前:",text);
+                console.log("加密后:", ciphertext);
+                console.log("解密后:",plaintext);
+
+
+
+                // 密钥对
+                let keyPair = rsaUtil.genKeyPair();
+                // 公钥加密
+                let ciphertext1 = rsaUtil.encrypt(text);
+                // 私钥解密
+                let plaintext1 = rsaUtil.decrypt(ciphertext1);
+
+                console.log("公钥:",keyPair.publicKey);
+                console.log("秘钥:",keyPair.privateKey);
+                console.log("加密前:", text);
+                console.log("加密后:", ciphertext1);
+                console.log("解密后:", plaintext1);
+            });
+        });       
+                
     </script>
 </html>

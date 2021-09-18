@@ -14,9 +14,9 @@
         <div>
             <input id="_ipt" type="button" value="公钥"/>
             <br/>
-            <input id="_ipt_mid" type="button" value="mid"/>
-            <input id="_ipt_getMeetRegionData" type="button" value="getMeetRegionData"/>
-            <input id="_ipt_getRegisterData" type="button" value="getRegisterData"/>
+            <input id="_ipt_monthly" type="button" value="monthly"/>
+            <input id="_ipt_screen" type="button" value="screen"/>
+            <input id="_ipt_biz" type="button" value="biz"/>
         </div>
     </body>
     <script type="text/javascript">
@@ -29,7 +29,7 @@
             $("#_ipt").click(() => {
                 $.ajax({
                      type: "POST",
-                     url: "http://127.0.0.1:8081/middle/admin/keypair/exchange",
+                     url: "http://127.0.0.1:8082/admin/admin/keypair/exchange",
                      data: {
                         "publicKey": keyPair.publicKey,
                      },
@@ -42,13 +42,27 @@
                  });
             });
 
-            $("#_ipt_mid").click(() => {
+            $("#_ipt_monthly").click(() => {
                 $.ajax({
                      type: "POST",
-                     headers: {
-                        "appTenantId": 1
-                     },
-                     url: "http://127.0.0.1:8081/middle/admin/count/mid",
+                     url: "http://127.0.0.1:8082/admin/count/monthly",
+                     dataType: "json",
+                     success: function(res){
+                        let l1 = new Date().getTime();
+                        console.log(res.cipher);
+                        let key = rsaUtil.decrypt(res.cipher);
+                        let d = aesUtil.decrypt(res.data,key);
+                        console.log(d);
+                        let l2 = new Date().getTime();
+                        console.log(l2-l1);
+                     }
+                 });
+            });
+
+            $("#_ipt_screen").click(() => {
+                $.ajax({
+                     type: "POST",
+                     url: "http://127.0.0.1:8082/admin/count/screen",
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();
@@ -62,33 +76,10 @@
                  });
             });
 
-            $("#_ipt_getMeetRegionData").click(() => {
+            $("#_ipt_biz").click(() => {
                 $.ajax({
                      type: "POST",
-                     headers: {
-                        "appTenantId": 1
-                     },
-                     url: "http://127.0.0.1:8081/middle/admin/count/getMeetRegionData",
-                     dataType: "json",
-                     success: function(res){
-                        let l1 = new Date().getTime();
-                        console.log(res);
-                        let key = rsaUtil.decrypt(res.cipher);
-                        let d = aesUtil.decrypt(res.data,key);
-                        console.log(d);
-                        let l2 = new Date().getTime();
-                        console.log(l2-l1);
-                     }
-                 });
-            });
-
-            $("#_ipt_getRegisterData").click(() => {
-                $.ajax({
-                     type: "POST",
-                     headers: {
-                        "appTenantId": 1
-                     },
-                     url: "http://127.0.0.1:8081/middle/admin/count/getRegisterData",
+                     url: "http://127.0.0.1:8082/admin/count/biz",
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();

@@ -49,38 +49,33 @@ var rsaUtil = {
     bits: 1024,
 
     //当前JSEncrypted对象
-    thisKeyPair: {},
+    encDec: {},
 
     //生成密钥对(公钥和私钥)
     genKeyPair: function(bits = rsaUtil.bits) {
-        let genKeyPair = {};
-        rsaUtil.thisKeyPair = new JSEncrypt({
+        encDec = new JSEncrypt({
             default_key_size: bits
         });
 
-        //获取私钥
-        genKeyPair.privateKey = rsaUtil.thisKeyPair.getPrivateKey();
-
+        let keyPair = {};
         //获取公钥
-        genKeyPair.publicKey = rsaUtil.thisKeyPair.getPublicKey();
+        keyPair.publicKey = encDec.getPublicKey();
 
-        return genKeyPair;
+        return keyPair;
     },
 
     //公钥加密
-    encrypt: function(plaintext, publicKey) {
+    encrypt: function(plaintext) {
         if (plaintext instanceof Object) {
             //1、JSON.stringify
             plaintext = JSON.stringify(plaintext)
         }
-        publicKey && rsaUtil.thisKeyPair.setPublicKey(publicKey);
-        return rsaUtil.thisKeyPair.encrypt(plaintext);
+        return encDec.encrypt(plaintext);
     },
 
     //私钥解密
-    decrypt: function(ciphertext, privateKey) {
-        privateKey && rsaUtil.thisKeyPair.setPrivateKey(privateKey);
-        let decString = rsaUtil.thisKeyPair.decrypt(ciphertext);
+    decrypt: function(ciphertext) {
+        let decString = encDec.decrypt(ciphertext);
         if (decString.charAt(0) === "{" || decString.charAt(0) === "[") {
             //JSON.parse
             decString = JSON.parse(decString);
