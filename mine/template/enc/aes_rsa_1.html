@@ -21,8 +21,8 @@
     </body>
     <script type="text/javascript">
 
-        // 密钥对
-        let keyPair = rsaUtil.genKeyPair();
+        // 公钥
+        let jpk = rsaUtil.genPk();
         let hpk = '';
 
         $(() => {
@@ -31,11 +31,11 @@
                      type: "POST",
                      url: "http://127.0.0.1:8081/middle/admin/keypair/exchange",
                      data: {
-                        "publicKey": keyPair.publicKey,
+                        "publicKey": jpk,
                      },
                      dataType: "json",
                      success: function(res1){
-                        console.log("前端公钥:", keyPair.publicKey);
+                        console.log("前端公钥:", jpk);
                         console.log("后端公钥:", res1.data);
                         hpk = res1.data;
                      }
@@ -52,12 +52,11 @@
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();
-                        console.log(res);
                         let key = rsaUtil.decrypt(res.cipher);
                         let d = aesUtil.decrypt(res.data,key);
-                        console.log(d);
                         let l2 = new Date().getTime();
-                        console.log(l2-l1);
+                        console.log("解密时长", l2-l1);
+                        console.log(d);
                      }
                  });
             });
@@ -72,12 +71,11 @@
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();
-                        console.log(res);
                         let key = rsaUtil.decrypt(res.cipher);
                         let d = aesUtil.decrypt(res.data,key);
-                        console.log(d);
                         let l2 = new Date().getTime();
-                        console.log(l2-l1);
+                        console.log("解密时长", l2-l1);
+                        console.log(d);
                      }
                  });
             });
@@ -92,12 +90,11 @@
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();
-                        console.log(res);
                         let key = rsaUtil.decrypt(res.cipher);
                         let d = aesUtil.decrypt(res.data,key);
-                        console.log(d);
                         let l2 = new Date().getTime();
-                        console.log(l2-l1);
+                        console.log("解密时长", l2-l1);
+                        console.log(d);
                      }
                  });
             });

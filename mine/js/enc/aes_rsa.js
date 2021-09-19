@@ -1,10 +1,11 @@
 /**
- * 简单封装一下
+ * AES加密解密
  */
 var aesUtil = {
+    bits: 16,
 
     //获取key，
-    genKey: function(length = 16) {
+    genKey: function(length = aesUtil.bits) {
         let random = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         let str = "";
         for (let i = 0; i < length; i++) {
@@ -42,44 +43,55 @@ var aesUtil = {
 };
 
 /**
- * 简单封装一下
+ * RSA加密解密
  */
 var rsaUtil = {
     //RSA 位数，这里要跟后端对应
     bits: 1024,
 
-    //当前JSEncrypted对象
-    encDec: {},
+    //当前解密JSEncrypted对象
+    decoder: null,
 
-    //生成密钥对(公钥和私钥)
-    genKeyPair: function(bits = rsaUtil.bits) {
-        encDec = new JSEncrypt({
-            default_key_size: bits
-        });
-
-        let keyPair = {};
-        //获取公钥
-        keyPair.publicKey = encDec.getPublicKey();
-
-        return keyPair;
-    },
-
-    //公钥加密
-    encrypt: function(plaintext) {
-        if (plaintext instanceof Object) {
-            //1、JSON.stringify
-            plaintext = JSON.stringify(plaintext)
+    // 生成公钥
+    genPk: function(size = rsaUtil.bits) {
+        if (!rsaUtil.decoder) {
+            rsaUtil.decoder = new JSEncrypt({
+                default_key_size: size
+            });
         }
-        return encDec.encrypt(plaintext);
+        //获取公钥
+        return rsaUtil.decoder.getPublicKey();
     },
 
     //私钥解密
     decrypt: function(ciphertext) {
-        let decString = encDec.decrypt(ciphertext);
+        let decString = rsaUtil.decoder.decrypt(ciphertext);
         if (decString.charAt(0) === "{" || decString.charAt(0) === "[") {
             //JSON.parse
             decString = JSON.parse(decString);
         }
         return decString;
-    }
+    },
+
+    //当前加密JSEncrypted对象
+    encoder: null,
+
+    genEncoder: function (size = rsaUtil.bits) {
+        if (!rsaUtil.encoder) {
+            rsaUtil.encoder = new JSEncrypt({
+                default_key_size: size
+            });
+        }
+    },
+
+    //公钥加密
+    encrypt: function(plaintext, publicKey) {
+        rsaUtil.genEncoder();
+        rsaUtil.encoder.setPublicKey(publicKey);
+        if (plaintext instanceof Object) {
+            //1、JSON.stringify
+            plaintext = JSON.stringify(plaintext)
+        }
+        return rsaUtil.encoder.encrypt(plaintext);
+    },
 };
