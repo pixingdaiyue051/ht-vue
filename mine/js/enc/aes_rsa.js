@@ -54,13 +54,16 @@ var rsaUtil = {
 
     // 生成公钥
     genPk: function(size = rsaUtil.bits) {
+        rsaUtil.genDecoder();
+        return rsaUtil.decoder.getPublicKey();
+    },
+
+    genDecoder: function(size = rsaUtil.bits) {
         if (!rsaUtil.decoder) {
             rsaUtil.decoder = new JSEncrypt({
                 default_key_size: size
             });
         }
-        //获取公钥
-        return rsaUtil.decoder.getPublicKey();
     },
 
     //私钥解密
