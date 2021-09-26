@@ -25,12 +25,15 @@
         // 公钥
         let jpk = rsaUtil.genPk();
         let hpk = '';
+        let server_uri = 'http://127.0.0.1:8081/middle/';
+        //let server_uri = 'http://192.168.3.211:8081/middle/';
+        //let server_uri = 'http://192.168.0.145:8081/middle/';
 
         $(() => {
             $("#_ipt").click(() => {
                 $.ajax({
                      type: "POST",
-                     url: "http://127.0.0.1:8081/middle/admin/keypair/exchange",
+                     url: server_uri + "admin/keypair/exchange",
                      data: {
                         "publicKey": jpk,
                      },
@@ -46,7 +49,7 @@
             $("#_ipt1").click(() => {
                 $.ajax({
                      type: "POST",
-                     url: "http://127.0.0.1:8081/middle/demo/encrypt",
+                     url: server_uri + "demo/encrypt",
                      dataType: "json",
                      success: function(res){
                         let l1 = new Date().getTime();
@@ -79,7 +82,7 @@
                 $.ajax({
                      type: "POST",
                      contentType: "application/json;charset=utf-8",
-                     url: "http://127.0.0.1:8081/middle/demo/decrypt",
+                     url: server_uri + "demo/decrypt",
                      data: JSON.stringify({
                         "username": username,
                         "userPhone": userPhone
@@ -111,7 +114,7 @@
                 $.ajax({
                      type: "POST",
                      contentType: "application/json;charset=utf-8",
-                     url: "http://127.0.0.1:8081/middle/demo/may",
+                     url: server_uri + "demo/may",
                      data: JSON.stringify({
                         "username": username,
                         "userPhone": userPhone
