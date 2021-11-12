@@ -3,13 +3,13 @@
  */
 var aesUtil = {
     bits: 16,
+    random: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
 
     //获取key，
     genKey: function(length = aesUtil.bits) {
-        let random = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         let str = "";
         for (let i = 0; i < length; i++) {
-            str = str + random.charAt(Math.random() * random.length)
+            str = str + aesUtil.random.charAt(Math.random() * aesUtil.random.length)
         }
         return str;
     },

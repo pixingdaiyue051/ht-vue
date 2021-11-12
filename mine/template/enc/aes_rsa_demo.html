@@ -13,11 +13,11 @@
         <h3>0000000000000000000000000000000</h3>
         <div>
             <input id="_ipt_test" type="button" value="测试"/>
+            <input id="_ipt" type="button" value="交换公钥"/>
             <br/>
-            <input id="_ipt" type="button" value="公钥"/>
             <input id="_ipt1" type="button" value="后端加密,前端解密"/>
             <input id="_ipt2" type="button" value="前端加密,后端解密"/>
-<!--            <input id="_ipt_may" type="button" value="加密解密"/>-->
+            <input id="_ipt3" type="button" value="完整一次请求响应"/>
         </div>
     </body>
     <script type="text/javascript">
@@ -25,15 +25,14 @@
         // 公钥
         let jpk = rsaUtil.genPk();
         let hpk = '';
-        let server_uri = 'http://127.0.0.1:8081/middle/';
-        //let server_uri = 'http://192.168.3.211:8081/middle/';
-        //let server_uri = 'http://192.168.0.145:8081/middle/';
+        let server_uri = 'http://127.0.0.1/boot/';
 
         $(() => {
+            // 交换公钥
             $("#_ipt").click(() => {
                 $.ajax({
                      type: "POST",
-                     url: server_uri + "admin/keypair/exchange",
+                     url: server_uri + "demo/exchange",
                      data: {
                         "publicKey": jpk,
                      },
@@ -46,6 +45,7 @@
                  });
             });
 
+            // 后端加密,前端解密
             $("#_ipt1").click(() => {
                 $.ajax({
                      type: "POST",
@@ -62,20 +62,20 @@
                  });
             });
 
+            // 前端加密,后端解密
             $("#_ipt2").click(() => {
                 let l1 = new Date().getTime();
                 // 明文字符串
                 let params = {
-                    "criminalNoLike": "44234",
-                    "nameLike": "42445fs",
-                    "username": "52f",
+                    "param1": "44234",
+                    "param2": "yunmsvwxs",
                     "createTimeFrom": "2020-01-01",
-                    "createTimeTo": "2020-01-01"
+                    "createTimeTo": "2020-02-01"
                 };
                 // key
                 let aesKey = aesUtil.genKey();
-                let username = aesUtil.encrypt(params, aesKey);
-                let userPhone = rsaUtil.encrypt(aesKey, hpk);
+                let data = aesUtil.encrypt(params, aesKey);
+                let cipher = rsaUtil.encrypt(aesKey, hpk);
                 let l2 = new Date().getTime();
                 console.log("加密时长", l2-l1);
 
@@ -84,8 +84,8 @@
                      contentType: "application/json;charset=utf-8",
                      url: server_uri + "demo/decrypt",
                      data: JSON.stringify({
-                        "username": username,
-                        "userPhone": userPhone
+                        "data": data,
+                        "cipher": cipher
                      }),
                      dataType: "json",
                      success: function(res){
@@ -94,30 +94,30 @@
                  });
             });
 
-            $("#_ipt_may").click(() => {
+            // 完整一次请求响应
+            $("#_ipt3").click(() => {
                 let l1 = new Date().getTime();
                 // 明文字符串
                 let params = {
-                    "criminalNoLike": "44234",
-                    "nameLike": "42445fs",
-                    "username": "52f",
+                    "param1": "44234",
+                    "param2": "yunmsvwxs",
                     "createTimeFrom": "2020-01-01",
-                    "createTimeTo": "2020-01-01"
+                    "createTimeTo": "2020-02-01"
                 };
                 // key
                 let aesKey = aesUtil.genKey();
-                let username = aesUtil.encrypt(params, aesKey);
-                let userPhone = rsaUtil.encrypt(aesKey, hpk);
+                let data = aesUtil.encrypt(params, aesKey);
+                let cipher = rsaUtil.encrypt(aesKey, hpk);
                 let l2 = new Date().getTime();
                 console.log("加密时长", l2-l1);
 
                 $.ajax({
                      type: "POST",
                      contentType: "application/json;charset=utf-8",
-                     url: server_uri + "demo/may",
+                     url: server_uri + "demo/handshake",
                      data: JSON.stringify({
-                        "username": username,
-                        "userPhone": userPhone
+                        "data": data,
+                        "cipher": cipher
                      }),
                      dataType: "json",
                      success: function(res){

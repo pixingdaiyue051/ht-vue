@@ -1,83 +1,109 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>index</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-        <script type="text/javascript" src="/js/jquery.min-3.4.1.js"></script>
-    </head>
-    <body>
-        <h3>111111111111111111111111111111</h3>
-        <div>
-            <input type="text" id="_ipt"/>
-            <input type="button" id="_send" onclick="mySend()" value="发送"/>
-            <br/>
-            <span id="_span"></span>
-        </div>
-    </body>
-    <script type="text/javascript">
-        // webSocket对象
-        var ws;
-        // 时间间隔
-        var tt;
 
-        if ("WebSocket" in window) {
-            console.log("支持WebSocket");
-            // 路径
-            let wsUrl = "ws://127.0.0.1:9481";
-            console.log("路径", wsUrl);
-            ws = new WebSocket(wsUrl);
-            // 连接关闭函数
-            ws.onclose = function () {
-                console.log("连接已关闭...");
-                clearInterval(tt);
-            };
-            // 连接错误函数
-            ws.onerror = function () {
-                console.log("连接错误...");
-                clearInterval(tt);
-            };
-            // 连接建立,发送信息
-            ws.onopen = function () {
-                console.log("已连接...");
-                // 成功连接后发送第一条消息
-                initSend();
-                // 心跳检测启动
-                heartBeat();
-            };
-            // 业务订阅成功后接受服务端推送消息  ，其实是个字符串
-            ws.onmessage = function (evt) {
-                console.log("接收到消息", evt.data);
-                $("#_span").html(evt.data);
-            };
-        } else {
-            alert("该浏览器不支持WebSocket")
-        }
+<head>
+    <meta charset="UTF-8" />
+    <title>index</title>
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script type="text/javascript" src="/js/jquery.min-3.4.1.js"></script>
+</head>
 
-        function initSend() {
+<body>
+    <h3>111111111111111111111111111111</h3>
+    <div>
+        <input type="text" id="_ipt" />
+        <input type="button" id="_send" onclick="mySend()" value="发送" />
+        <br />
+        <span id="_span"></span>
+    </div>
+</body>
+<script type="text/javascript">
+    // WebSocket对象
+    var ws;
+    // 路径
+    var WS_URL = "ws://127.0.0.1:8342";
+    // 时间间隔
+    var tt;
+    // 心跳频率 30s
+    var HEART_BEAT_FREQ = 30000;
+    // 已尝试连接次数
+    var limit = 0;
+    // 最大连接次数
+    var MAX_CONN_LIMIT = 5;
+
+    if ("WebSocket" in window) {
+        console.log("支持WebSocket");
+        console.log("路径", WS_URL);
+        conn();
+    } else {
+        alert("该浏览器不支持WebSocket")
+    }
+        
+    function conn() {
+        ws = new WebSocket(WS_URL);
+        // 连接关闭函数
+        ws.onclose = function () {
+            console.log("连接已关闭...尝试重连", limit);
+            clearInterval(tt);
+            if (++limit < MAX_CONN_LIMIT) {
+                setTimeout(function(){
+                    conn();
+                }, HEART_BEAT_FREQ);
+            }
+        };
+        // 连接错误函数
+        ws.onerror = function () {
+            console.log("连接错误...");
+            clearInterval(tt);
+        };
+        // 连接建立,发送信息
+        ws.onopen = function () {
+            limit = 0; 
+            console.log("已连接...");
+            // 成功连接后发送第一条消息
+            initSend();
+            // 心跳检测启动
+            heartBeat();
+        };
+        // 业务订阅成功后接受服务端推送消息  ，其实是个字符串
+        ws.onmessage = function (evt) {
+            console.log("接收到消息", evt);
+            $("#_span").html(evt.data);
+        };
+    }
+
+    function initSend() {
+        let message = {
+            "key": "sub",
+            "value": "1111",
+            "code": "2001",
+            "msg": "业务1-订阅包..."
+        };
+        ws.send(JSON.stringify(message));
+    }
+
+    function heartBeat() {
+        tt = setInterval(function () {
             let message = {
-                "code": "01",
-                "msg": "业务1-订阅包..."
+                "key": "heart",
+                "value": "demo",
+                "code": "2000",
+                "msg": "心跳包"
             };
             ws.send(JSON.stringify(message));
-        }
+        }, HEART_BEAT_FREQ);
+    }
 
-        function heartBeat() {
-            tt = setInterval(function(){
-                let message = {
-                    "code": "00",
-                    "msg":"心跳包 == "+ new Date().getTime() + "..."
-                };
-                ws.send(JSON.stringify(message));
-            }, 30000);
-        }
+    function mySend() {
+        let message = {
+            "key": "biz",
+            "value": "demo",
+            "code": "2002",
+            "msg": $("#_ipt").val() + "..."
+        };
+        ws.send(JSON.stringify(message));
+    }
+</script>
 
-        function mySend() {
-            let message = {
-                "code": "02",
-                "msg":$("#_ipt").val() + "..."
-            };
-            ws.send(JSON.stringify(message));
-        }
-    </script>
 </html>
