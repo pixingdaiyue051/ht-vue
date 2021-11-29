@@ -15,10 +15,7 @@
         <input type="text" id="_ipt" />
         <input type="button" id="_send" onclick="mySend()" value="发送" />
         <br />
-        <input type="file" id="_file" />
-        <input type="button" id="_send" onclick="mySendFile()" value="发送" />
-        <br />
-        <span id="_span"></span>
+        <div id="_msg"><ul></ul></div>
     </div>
 </body>
 <script type="text/javascript">
@@ -36,6 +33,8 @@
     var MAX_CONN_LIMIT = 5;
     // 断开重连间隔 10s
     var CONN_FREQ = 10000;
+    // 消息接收人
+    var userId = "1987465311";
 
     if ("WebSocket" in window) {
         console.log("支持WebSocket");
@@ -73,17 +72,19 @@
         };
         // 业务订阅成功后接受服务端推送消息 其实是个字符串
         ws.onmessage = function (evt) {
-            console.log("接收到消息", evt.data);
-            $("#_span").html(evt.data);
+            let res = evt.data;
+            console.log("接收到消息", res);
+            let json = JSON.parse(res);
+            if ("4002" == json.code) {
+                $("#_msg ul").append("<li>接收:"+json.msg+"</li>");
+            }
         };
     }
 
     function initSend() {
         let message = {
-            "key": "sub",
-            "value": "demo",
-            "code": "2001",
-            "msg": "业务1-订阅包..."
+            "code": "4000",
+            "msg": "客服上线..."
         };
         ws.send(JSON.stringify(message));
     }
@@ -106,19 +107,13 @@
             return;
         }
         let message = {
-            "key": "biz",
-            "value": "demo",
-            "code": "2002",
-            "msg": msg + "..."
+            "value": userId,
+            "code": "4001",
+            "msg": msg
         };
         ws.send(JSON.stringify(message));
+        $("#_msg ul").append("<li>发送:"+msg+"</li>");
         $("#_ipt").val('');
-    }
-
-    function mySendFile() {
-        var f = $("#_file")[0].files[0];
-        console.log(f);
-        ws.send(f);
     }
 </script>
 
