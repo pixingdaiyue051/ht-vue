@@ -1,0 +1,11 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "this is a demo",
+  "main": "app.js",
+  "scripts": {
+    "test": "console.log('hello world');"
+  },
+  "author": "",
+  "license": "ISC"
+}
