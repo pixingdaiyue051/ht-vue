@@ -15,41 +15,46 @@
         <input type="text" id="_ipt" />
         <input type="button" id="_send" onclick="mySend()" value="发送" />
         <br />
-        <div id="_msg"><ul></ul></div>
+        <div id="_msg">
+            <ul></ul>
+        </div>
     </div>
 </body>
 <script type="text/javascript">
     // WebSocket对象
     var ws;
     // 路径
-    var WS_URL = "ws://127.0.0.1:8342";
+    var WS_URL = "ws://127.0.0.1/ws";
     // 时间间隔
     var tt;
     // 心跳频率 30s
     var HEART_BEAT_FREQ = 30000;
     // 已尝试连接次数
-    var limit = 0;
+    var LIMIT = 0;
     // 最大连接次数
     var MAX_CONN_LIMIT = 5;
     // 断开重连间隔 10s
     var CONN_FREQ = 10000;
+    // 消息发送人
+    var userId = "1465592307356033025";
+    // 客服id
+    var serviceId;
 
     if ("WebSocket" in window) {
         console.log("支持WebSocket");
-        console.log("路径", WS_URL);
         conn();
     } else {
-        alert("该浏览器不支持WebSocket")
+        console.alert("该浏览器不支持WebSocket")
     }
-        
+
     function conn() {
         ws = new WebSocket(WS_URL);
         // 连接关闭函数
         ws.onclose = function () {
-            console.log("连接已关闭...尝试重连", limit);
+            console.log("连接已关闭...尝试重连", ++LIMIT);
             clearInterval(tt);
-            if (++limit < MAX_CONN_LIMIT) {
-                setTimeout(function(){
+            if (LIMIT < MAX_CONN_LIMIT) {
+                setTimeout(function () {
                     conn();
                 }, CONN_FREQ);
             }
@@ -57,11 +62,10 @@
         // 连接错误函数
         ws.onerror = function () {
             console.log("连接错误...");
-            clearInterval(tt);
         };
         // 连接建立 发送信息
         ws.onopen = function () {
-            limit = 0; 
+            limit = 0;
             console.log("已连接...");
             // 成功连接后发送第一条消息
             initSend();
@@ -73,17 +77,20 @@
             let res = evt.data;
             console.log("接收到消息", res);
             let json = JSON.parse(res);
-            if ("4005" == json.code) {
-                $("#_msg ul").append("<li>接收:"+json.msg+"</li>");
+            if ("5000" == json.code || "5003" == json.code) {
+                serviceId = json.data;
+                $("#_msg ul").append("<li>" + json.msg + "</li>");
+            }
+            if ("5002" == json.code) {
+                $("#_msg ul").append("<li>接收:" + json.data.content + "</li>");
             }
         };
     }
 
     function initSend() {
         let message = {
-            "value": "1987465311",
-            "code": "4003",
-            "msg": "客户上线..."
+            "value": userId,
+            "code": "5000"
         };
         ws.send(JSON.stringify(message));
     }
@@ -91,8 +98,6 @@
     function heartBeat() {
         tt = setInterval(function () {
             let message = {
-                "key": "heart",
-                "value": "demo",
                 "code": "2000",
                 "msg": "心跳包"
             };
@@ -102,16 +107,25 @@
 
     function mySend() {
         let msg = $("#_ipt").val();
-        if(!msg) {
+        if (!msg) {
+            console.log("消息为空");
+            return;
+        }
+        if (!serviceId) {
+            console.log("serviceId为空");
             return;
         }
         let message = {
-            "value": "1987465311",
-            "code": "4004",
-            "msg":  msg
+            "code": "5001",
+            "value": {
+                "type": "1",
+                "content": msg,
+                "sender": userId,
+                "receiver": serviceId
+            }
         };
         ws.send(JSON.stringify(message));
-        $("#_msg ul").append("<li>发送:"+msg+"</li>");
+        $("#_msg ul").append("<li>发送:" + msg + "</li>");
         $("#_ipt").val('');
     }
 </script>
