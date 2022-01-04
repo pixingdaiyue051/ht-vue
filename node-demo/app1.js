@@ -1,50 +1,84 @@
-// -------------------------------------------fs
-const fs = require('fs');
+const express = require('express');
 
-// 异步读文件
-// fs.readFile('../myfile/gobelieve-app-img.jpg', 'binary', (err, data) => {
-//     if (err) {
-//         console.log(err.message)
-//     }
-//     console.log(data);
-// });
+const app = express();
 
-// 异步写文件
-// fs.writeFile('../myfile/a.txt', '234wrwer', (err) => {
-//     if (err) {
-//         console.log(err.message);
-//     }
-// });
+// app.use 注册全局访问路由
+// 跨域请求
+const cors =  require('cors');
+app.use(cors());
+// 注册使用session
+const exss = require('express-session');
+app.use(exss({
+    secret: 'apphd5',
+    resave: false,
+    saveUninitialized: true
+}));
+// 加载静态资源 默认不带访问路径
+app.use(express.static("./out"));
+// 指定访问路径
+// app.use('/out', express.static("./out"));
 
-// -------------------------------------------path
-const path = require('path');
+// 接收并解析 Content-Type application/json 请求
+app.use(express.json());
+// 接收并解析 Content-Type application/x-www-form-urlencoded 请求
+app.use(express.urlencoded({ extended: false }));
+// 接收并解析 Content-Type text/plain 请求
+app.use(express.text());
+// 接收并解析 Content-Type
+// app.use(express.raw());
 
-const fpath = '/data/doc/1.jpeg';
-console.log("文件目录", path.dirname(fpath));
-console.log("文件名", path.basename(fpath));
-console.log("文件扩展名", path.extname(fpath));
-console.log("文件名(无后缀)", path.basename(fpath, path.extname(fpath)));
-console.log("当前执行文件所在路径", __dirname);
-console.log("当前执行文件全路径", __filename);
-console.log("文件全路径", path.resolve(__dirname, 'index.js'));
-console.log("文件全路径", path.join(__dirname, 'index.js'));
+// 自定义中间件
+app.use((req, res, next) => {
+    req.party = [1];
+    console.log("中间件1");
+    next();
+});
+app.use((req, res, next) => {
+    req.party.push(2);
+    console.log("中间件2");
+    next();
+});
+app.use((req, res, next) => {
+    req.party.push(3);
+    console.log("中间件3");
+    next();
+});
 
-// 规范文件路径 按层级逻辑输出完整的路径
-// . 当前路径 ..上层路径 /路径分隔符 \转义符
-console.log(path.normalize("234/5/7342/../yty/667/./655/5454ft/"));
-// 将多个路径连接成一个路径 按层级逻辑输出
-console.log(path.join("data/234/..", "./data/5", "3/../42"));
+// 监听get请求
+app.get('/', (req, res) => {
+    console.log(req.query);
+    res.send(req.query);
+});
 
-console.log("文件路径分隔符", path.sep);
-console.log("系统分隔符", path.delimiter);
+// 监听post请求
+app.post('/', (req, res) => {
+    console.log(req.query);
+    res.send(req.query);
+});
 
-// -------------------------------------------时间API moment
-const moment = require('moment');
-const dt = moment().format('YYYY-MM-DD HH:mm:ss');
-console.log(dt);
+app.get('/test', (req, res, next) => {
+    console.log("test局部中间件");
+    console.log(req);
+    if (req.query.err) {
+        throw new Error("1/0");
+    }
+    next();
+}, (req, res) => {
+    res.send(req.body);
+});
 
-// ------------------------------------------- 自定义包
-// 1.在当前目录下寻找ext.js
-// 2.如果上一步完成则结束 如果不成功则寻找ext文件夹下package.json的main属性指定的入口文件
-const ext = require('./test');
-console.log(ext.fnt3());
+// 加载其他模块路由
+app.use(require('./router1'));
+
+// 内部错误转发至该中间件处理
+app.use((err, req, res, next) => {
+    console.log(err.message);
+    res.send('err');
+});
+
+const hostname = '127.0.0.1';
+const port = 8541;
+
+app.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}`);
+})

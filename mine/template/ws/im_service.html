@@ -75,8 +75,14 @@
             let res = evt.data;
             console.log("接收到消息", res);
             let json = JSON.parse(res);
+            if ("4000" == json.code) {
+                $("#_msg ul").append("<li>接收:"+json.msg+"</li>");
+            }
             if ("4002" == json.code) {
                 $("#_msg ul").append("<li>接收:"+json.data.content+"</li>");
+            }
+            if ("4003" == json.code) {
+                $("#_msg ul").append("<li>接收:"+json.msg+"</li>");
             }
         };
     }

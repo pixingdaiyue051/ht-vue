@@ -77,12 +77,15 @@
             let res = evt.data;
             console.log("接收到消息", res);
             let json = JSON.parse(res);
-            if ("5000" == json.code || "5003" == json.code) {
-                serviceId = json.data;
+            if ("5000" == json.code || "5004" == json.code) {
                 $("#_msg ul").append("<li>" + json.msg + "</li>");
             }
             if ("5002" == json.code) {
                 $("#_msg ul").append("<li>接收:" + json.data.content + "</li>");
+            }
+            if ("5003" == json.code) {
+                serviceId = json.data;
+                $("#_msg ul").append("<li>" + json.msg + "</li>");
             }
         };
     }

@@ -1,21 +1,25 @@
 ### 命令行
 0. 查询包https://www.npmjs.com/
-1. node -v  检查版本
-2. node xx.js   运行单个脚本
-3. npm init -y  初始化在项目根目录下生成package.json
-4. npm install xx  简写 npm i xx  安装xx最新版本  
+1. node -v  检查版本  
+    node xx.js   运行单个脚本  
+    npm init -y  初始化在项目根目录下生成package.json  
+    npm install xx  简写 npm i xx  安装xx最新版本  
     npm i xx@x.x.x  安装xx指定版本  
     npm i  直接安装package.json这种全部依赖包  
     npm i xx --save-dev 简写 npm i xx -D    安装开发环境包  
     npm i cnpm -g --registry=https://registry.npm.taobao.org    安装阿里镜像包   
-5. npm uninstall xx 简写 npm un xx  删除包
-6. 设置下载包地址 npm config set registry=https://registry.npm.taobao.org  
-    查看下载包地址 npm config get registry
-7. nrm小工具  
+    npm uninstall xx 简写 npm un xx  删除包  
+    npm config get registry     查看当前下载路径  
+    npm config set registry=https://registry.npm.taobao.org   设置淘宝镜像  
+    npm root -g  查看全局安装路径  
+    npm prefix -g  查看node路径  
+    npm config set prefix 'xx'  设置node安装的全局路径(默认带上node_modules)
+
+2. nrm小工具  
     npm i nrm -g  
     nrm ls  显示所有可选下载报地址  
     nrm use xx 切换到具体的地址
-8. i5ting_toc  
+3. i5ting_toc  
     npm install -g i5ting_toc
     i5ting_toc -f xx
 ### 模块
