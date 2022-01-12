@@ -14,6 +14,7 @@
     <div>
         <input type="text" id="_ipt" />
         <input type="button" id="_send" onclick="mySend()" value="发送" />
+        <input type="button" id="_end" onclick="end()" value="结束" />
         <br />
         <div id="_msg">
             <ul></ul>
@@ -53,11 +54,11 @@
         ws.onclose = function () {
             console.log("连接已关闭...尝试重连", ++LIMIT);
             clearInterval(tt);
-            if (LIMIT < MAX_CONN_LIMIT) {
-                setTimeout(function () {
-                    conn();
-                }, CONN_FREQ);
-            }
+            // if (LIMIT < MAX_CONN_LIMIT) {
+            //     setTimeout(function () {
+            //         conn();
+            //     }, CONN_FREQ);
+            // }
         };
         // 连接错误函数
         ws.onerror = function () {
@@ -77,14 +78,17 @@
             let res = evt.data;
             console.log("接收到消息", res);
             let json = JSON.parse(res);
-            if ("5000" == json.code || "5004" == json.code) {
+            if ("5000" == json.code) {
                 $("#_msg ul").append("<li>" + json.msg + "</li>");
             }
             if ("5002" == json.code) {
                 $("#_msg ul").append("<li>接收:" + json.data.content + "</li>");
             }
             if ("5003" == json.code) {
-                serviceId = json.data;
+                serviceId = json.data.sender;
+                $("#_msg ul").append("<li>" + serviceId + "</li>");
+            }
+            if ("5004" == json.code) {
                 $("#_msg ul").append("<li>" + json.msg + "</li>");
             }
         };
@@ -130,6 +134,14 @@
         ws.send(JSON.stringify(message));
         $("#_msg ul").append("<li>发送:" + msg + "</li>");
         $("#_ipt").val('');
+    }
+
+    function end() {
+        let message = {
+            "code": "5010",
+            "value": userId
+        };
+        ws.send(JSON.stringify(message));
     }
 </script>
 

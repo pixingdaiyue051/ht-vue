@@ -14,6 +14,7 @@
     <div>
         <input type="text" id="_ipt" />
         <input type="button" id="_send" onclick="mySend()" value="发送" />
+        <input type="button" id="_end" onclick="end()" value="结束" />
         <br />
         <div id="_msg"><ul></ul></div>
     </div>
@@ -36,7 +37,7 @@
     // 消息接收人
     var userId = "1470230157283504130";
     // 客服id
-    var serviceId = "2";
+    var serviceId = "1436139838251229186";
 
     if ("WebSocket" in window) {
         console.log("支持WebSocket");
@@ -44,18 +45,18 @@
     } else {
         console.alert("该浏览器不支持WebSocket")
     }
-        
+    
     function conn() {
         ws = new WebSocket(WS_URL);
         // 连接关闭函数
         ws.onclose = function () {
             console.log("连接已关闭...尝试重连", ++LIMIT);
             clearInterval(tt);
-            if (LIMIT < MAX_CONN_LIMIT) {
-                setTimeout(function () {
-                    conn();
-                }, CONN_FREQ);
-            }
+            // if (LIMIT < MAX_CONN_LIMIT) {
+            //     setTimeout(function () {
+            //         conn();
+            //     }, CONN_FREQ);
+            // }
         };
         // 连接错误函数
         ws.onerror = function () {
@@ -82,7 +83,11 @@
                 $("#_msg ul").append("<li>接收:"+json.data.content+"</li>");
             }
             if ("4003" == json.code) {
-                $("#_msg ul").append("<li>接收:"+json.msg+"</li>");
+                $("#_msg ul").append("<li>接收:"+json.data+"</li>");
+            }
+            if ("4004" == json.code) {
+                userId = json.data.sender
+                $("#_msg ul").append("<li>接收:"+userId+"</li>");
             }
         };
     }
@@ -122,6 +127,14 @@
         ws.send(JSON.stringify(message));
         $("#_msg ul").append("<li>发送:"+msg+"</li>");
         $("#_ipt").val('');
+    }
+
+    function end() {
+        let message = {
+            "code": "4010",
+            "value": 2
+        };
+        ws.send(JSON.stringify(message));
     }
 </script>
 
