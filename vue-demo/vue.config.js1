@@ -1,0 +1,19 @@
+// vue.config.js是一个可选的配置文件
+// 也可以改为在package.json中增加vue字段
+module.exports = {
+  pages: {
+    index: {
+      // 入口js
+      entry: 'src/main2.js',
+      // 模板来源
+      template: 'public/index2.html'
+    }
+  }
+}
+// "vue": {
+//   "pages": {
+//     "index": {
+//       "entry": "src/main2.js"
+//     }
+//   }
+// }

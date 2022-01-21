@@ -8,9 +8,5 @@ target
 *.iml
 *.ipr
 out
-
-test*
-myfile/test*
-node-demo/node_modules
-vue-demo/node_modules
-vue-hello/node_modules
+node_modules
+test
