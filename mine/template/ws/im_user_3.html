@@ -7,40 +7,99 @@
     <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <script type="text/javascript" src="/mine/js/jquery.min-3.4.1.js"></script>
+
+    <style>
+        .bodyBgColor {
+            background-color: #362323a8;
+        }
+
+        .inpBgColor {
+            background-color: #725c5c75;
+        }
+
+        #_con {
+            border: 2px solid #000;
+            width: 1000px;
+            /* 1004 */
+            height: 800px;
+            /* 804 */
+        }
+
+        #_leftBar {
+            border: 1px solid #000;
+            float: left;
+            width: 298px;
+            /* 300 */
+            height: 698px;
+            /* 700 */
+        }
+
+        #_rightBar {
+            border: 1px solid #000;
+            float: right;
+            width: 698px;
+            /* 700 */
+            height: 698px;
+            /* 700 */
+        }
+
+        #_bottomBar {
+            border: 1px solid #000;
+            float: right;
+            width: 998px;
+            /* 1000 */
+            height: 98px;
+            /* 100 */
+        }
+
+        #_ipt {
+            border: 1px solid #000;
+            width: 800px;
+            /* 1000 */
+            height: 92px;
+            /* 100 */
+        }
+    </style>
 </head>
 
-<body>
-    <h3>111111111111111111111111111111</h3>
-    <div>
-        <input type="text" id="_ipt" />
-        <input type="button" id="_send" onclick="mySend()" value="发送" />
-        <input type="button" id="_end" onclick="end()" value="结束" />
-        <br />
-        <div id="_msg">
+<body class="bodyBgColor">
+    <h3>###########################</h3>
+    <div id="_con">
+        <div id="_leftBar">
+        </div>
+        <div id="_rightBar">
             <ul></ul>
+        </div>
+        <div id="_bottomBar">
+            <textarea class="inpBgColor" type="text" id="_ipt"></textarea>
+            <input class="inpBgColor" type="button" id="_send" onclick="mySend()" value="发送" />
+            <input class="inpBgColor" type="button" id="_end" onclick="end()" value="结束" />
         </div>
     </div>
 </body>
+
 <script type="text/javascript">
     // WebSocket对象
-    var ws;
+    let ws;
     // 路径
-    var WS_URL = "ws://127.0.0.1/ws";
-    // 时间间隔
-    var tt;
+    const WS_URL = "ws://127.0.0.1/wsapp";
     // 心跳频率 30s
-    var HEART_BEAT_FREQ = 30000;
+    const HEART_BEAT_FREQ = 30000;
     // 已尝试连接次数
-    var LIMIT = 0;
+    let limit = 0;
     // 最大连接次数
-    var MAX_CONN_LIMIT = 5;
+    const MAX_CONN_LIMIT = 5;
     // 断开重连间隔 10s
-    var CONN_FREQ = 10000;
+    const RECONN_FREQ = 10000;
+    // 是否已结束
+    let ended = false;
     // 消息发送人
-    var userId = "1466227820597370881";
+    const userId = "1465618224098861058";
+    // 定时任务
+    let tt;
     // 客服id
-    var serviceId;
-
+    let serviceId;
+    
     if ("WebSocket" in window) {
         console.log("支持WebSocket");
         conn();
@@ -52,13 +111,13 @@
         ws = new WebSocket(WS_URL);
         // 连接关闭函数
         ws.onclose = function () {
-            console.log("连接已关闭...尝试重连", ++LIMIT);
-            clearInterval(tt);
-            // if (LIMIT < MAX_CONN_LIMIT) {
-            //     setTimeout(function () {
-            //         conn();
-            //     }, CONN_FREQ);
-            // }
+            console.log("连接已关闭...");
+            if (ended || ++limit > MAX_CONN_LIMIT) {
+                return
+            }
+            setTimeout(function () {
+                conn();
+            }, RECONN_FREQ);
         };
         // 连接错误函数
         ws.onerror = function () {
@@ -70,50 +129,49 @@
             console.log("已连接...");
             // 成功连接后发送第一条消息
             initSend();
-            // 心跳检测启动
+            // 开启心跳包
             heartBeat();
         };
         // 业务订阅成功后接受服务端推送消息 其实是个字符串
         ws.onmessage = function (evt) {
-            let res = evt.data;
-            console.log("接收到消息", res);
-            let json = JSON.parse(res);
-            if ("5000" == json.code) {
-                $("#_msg ul").append("<li>" + json.msg + "</li>");
+            const res = evt.data;
+            console.log("接收到消息...", res);
+            const json = JSON.parse(res);
+            if ("5100" == json.code) {
+                $("#_rightBar ul").append("<li>接收:" + json.data.content + "</li>");
             }
-            if ("5002" == json.code) {
-                $("#_msg ul").append("<li>接收:" + json.data.content + "</li>");
-            }
-            if ("5003" == json.code) {
+            if ("5101" == json.code) {
                 serviceId = json.data.sender;
-                $("#_msg ul").append("<li>" + serviceId + "</li>");
+                $("#_leftBar").text("已连接到" + json.data.senderName);
             }
-            if ("5004" == json.code) {
-                $("#_msg ul").append("<li>" + json.msg + "</li>");
+            if ("5102" == json.code) {
+                $("#_rightBar ul").append("<li>" + json.msg + "</li>");
             }
+            heartBeat();
         };
     }
 
     function initSend() {
-        let message = {
+        const message = {
             "value": userId,
             "code": "5000"
         };
-        ws.send(JSON.stringify(message));
+        wsSend(message);
     }
 
     function heartBeat() {
-        tt = setInterval(function () {
-            let message = {
+        tt = setTimeout(function () {
+            const message = {
                 "code": "2000",
-                "msg": "心跳包"
+                "msg": "心跳包..."
             };
-            ws.send(JSON.stringify(message));
+            wsSend(message);
+            heartBeat()
         }, HEART_BEAT_FREQ);
     }
 
     function mySend() {
-        let msg = $("#_ipt").val();
+        const msg = $("#_ipt").val();
         if (!msg) {
             console.log("消息为空");
             return;
@@ -122,7 +180,7 @@
             console.log("serviceId为空");
             return;
         }
-        let message = {
+        const message = {
             "code": "5001",
             "value": {
                 "type": "1",
@@ -131,17 +189,27 @@
                 "receiver": serviceId
             }
         };
-        ws.send(JSON.stringify(message));
-        $("#_msg ul").append("<li>发送:" + msg + "</li>");
+        wsSend(message);
+        $("#_rightBar ul").append("<li>发送:" + msg + "</li>");
         $("#_ipt").val('');
     }
 
     function end() {
-        let message = {
+        clearTimeout(tt);
+        ended = true;
+        const message = {
             "code": "5010",
             "value": userId
         };
-        ws.send(JSON.stringify(message));
+        wsSend(message);
+    }
+
+    function wsSend(message) {
+        try {
+            ws.send(JSON.stringify(message));
+        } catch (err) {
+            console.log(err);
+        }
     }
 </script>
 
