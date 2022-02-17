@@ -2,7 +2,7 @@
   <div id="app">
     <!-- ref可以作为id的替代者 -->
     <h2 ref="ttp">{{ msg }}</h2>
-    <C1 ref="c1" />
+    <C1 ref="c1" c1p="prop1" :c1po="post1" />
     <hr />
     <C2 ref="c2" />
   </div>
@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       msg: "hello world",
+      post1: { m1: 111, m2: 222},
     };
   },
   mounted() {

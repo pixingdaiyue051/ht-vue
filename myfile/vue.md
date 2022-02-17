@@ -20,3 +20,8 @@
         v-model只能作用在表单元素 输入性元素 input select radio 这些带有value属性的标签
 4. Vue属性
     1. 计算属性computed
+### vue-cli
+0. npm i -g @vue/cli      全局安装脚手架  
+    npm run serve         启动vue项目  
+    npm run build         构建项目输出可执行文件  
+    vue inspect > out.js  输出配置项到out.js文件
