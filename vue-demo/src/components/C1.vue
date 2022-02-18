@@ -2,11 +2,11 @@
   <!-- 模板 -->
   <div>
     <h3>{{ name }}</h3>
-    <p>{{ c1p }}</p>
-    <p>
-      {{ c1po.m1 }} -
-      {{ c1po.m2 }}
-    </p>
+    <ul>
+      <li>{{ c1p }}</li>
+      <li>{{ c1po.m1 }}</li>
+      <li>{{ c1po.m2 }}</li>
+    </ul>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
       },
     },
   },
-};
+}
 </script>
 
 <style scoped>

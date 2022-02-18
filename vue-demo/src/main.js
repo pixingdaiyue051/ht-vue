@@ -7,6 +7,17 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+// 全局注册混合
+// import {mx1,mx2} from './scripts/mixin1.js'
+// Vue.mixin(mx1)
+// Vue.mixin(mx2)
+
+// 在vm创建之前先注册插件再使用
+// 默认会将Vue原型作为第一个参数传入插件
+// import p1 from './scripts/plugin1.js';
+// Vue.use(p1)
+
+
 new Vue({
   el: "#root",
   // render: function (createElement) {
