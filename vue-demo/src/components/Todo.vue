@@ -7,11 +7,10 @@
       :checkTodo="checkTodo"
       :deleteTodo="deleteTodo"
     />
-    <TodoBottom 
-      :choosed="choosed" 
-      :total="total" 
-      :checkAllTodo="checkAllTodo" 
-      :deleteAllTodo="deleteAllTodo" 
+    <TodoBottom
+      :todoList="todoList"
+      :checkAllTodo="checkAllTodo"
+      :deleteAllTodo="deleteAllTodo"
     />
   </div>
 </template>
@@ -43,28 +42,20 @@ export default {
       this.todoList.unshift(todoObj);
     },
     checkTodo(id) {
-      this.todoList.forEach(todo => {
+      this.todoList.forEach((todo) => {
         if (todo.id === id) {
           todo.finished = !todo.finished;
         }
       });
     },
     deleteTodo(id) {
-      this.todoList = this.todoList.filter(todo => todo.id !== id);
+      this.todoList = this.todoList.filter((todo) => todo.id !== id);
     },
     checkAllTodo(checkedEvt) {
-      this.todoList.forEach(todo => todo.finished = checkedEvt);
+      this.todoList.forEach((todo) => (todo.finished = checkedEvt));
     },
     deleteAllTodo() {
-      this.todoList = this.todoList.filter(todo => !todo.finished);
-    },
-  },
-  computed: {
-    choosed() {
-      return this.todoList.reduce((pre, cur) => pre + (cur.finished ? 1 : 0), 0);
-    },
-    total() {
-      return this.todoList.length;
+      this.todoList = this.todoList.filter((todo) => !todo.finished);
     },
   },
 };
