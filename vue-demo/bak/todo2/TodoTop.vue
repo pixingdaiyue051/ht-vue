@@ -17,7 +17,7 @@ export default {
       const tmp = this.title;
       if (!tmp) return;
       const obj = { id: nanoid(), title: tmp, finished: false };
-      this.$bus.$emit("addTodo", obj);
+      this.$emit("addTodo", obj);
       this.title = "";
     },
   },

@@ -14,16 +14,16 @@
 <script>
 export default {
   name: "TodoItem",
-  props: ["todoItem"],
+  props: ["todoItem", "checkTodo", "deleteTodo"],
   methods: {
     handlerChange(id) {
-      this.$bus.$emit('checkTodo',id);
+      this.checkTodo(id);
     },
     handlerDelete(id) {
       if (!confirm("确认删除吗?")) {
         return;
       }
-      this.$bus.$emit('deleteTodo',id);
+      this.deleteTodo(id);
     },
   },
 };

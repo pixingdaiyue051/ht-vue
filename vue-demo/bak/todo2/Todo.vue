@@ -2,9 +2,17 @@
   <!-- 模板 -->
   <div>
     <h3>{{ title }}</h3>
-    <TodoTop />
-    <TodoList :todoList="todoList" />
-    <TodoBottom :todoList="todoList" />
+    <TodoTop @addTodo="addTodo" />
+    <TodoList
+      :todoList="todoList"
+      :checkTodo="checkTodo"
+      :deleteTodo="deleteTodo"
+    />
+    <TodoBottom
+      :todoList="todoList"
+      @checkAllTodo="checkAllTodo"
+      @deleteAllTodo="deleteAllTodo"
+    />
   </div>
 </template>
 
@@ -54,23 +62,6 @@ export default {
         localStorage.setItem("todoList", JSON.stringify(val));
       },
     },
-  },
-  mounted() {
-    this.$bus.$on("addTodo", this.addTodo);
-    this.$bus.$on("checkTodo", this.checkTodo);
-    this.$bus.$on("deleteTodo", this.deleteTodo);
-    this.$bus.$on("checkAllTodo", this.checkAllTodo);
-    this.$bus.$on("deleteAllTodo", this.deleteAllTodo);
-  },
-  beforeDestory() {
-    const arr = [
-      "addTodo",
-      "checkTodo",
-      "deleteTodo",
-      "checkAllTodo",
-      "deleteAllTodo",
-    ];
-    this.$bus.$off(arr);
   },
 };
 </script>

@@ -18,7 +18,7 @@ export default {
       if (!confirm("确认删除吗?")) {
         return;
       }
-      this.$bus.$emit("deleteAllTodo");
+      this.$emit("deleteAllTodo");
     },
   },
   computed: {
@@ -36,7 +36,7 @@ export default {
         return this.choosed === this.total;
       },
       set(val) {
-        this.$bus.$emit("checkAllTodo", val);
+        this.$emit("checkAllTodo", val);
       },
     },
   },
