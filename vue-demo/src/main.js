@@ -17,6 +17,20 @@ Vue.config.productionTip = false
 // import p1 from './scripts/plugin1.js';
 // Vue.use(p1)
 
+// 全局事件总线 globle event bus
+// 1.所有的组件都可以无限制访问到
+// 2.总线上有$on $off $emit方法
+// 3.使用Vue的原型对象作为总线
+// 4.$on注册 $off销毁 $emit触发
+// 5.注册总线事件的组件的销毁之前一定要先销毁自己注册的自定义事件
+
+// 1.创建一个空VueCompont注册成全局总线
+// const d = Vue.extend({})
+// const bus = new d()
+// Vue.prototype.bus = bus
+
+// 2.直接使用root根vm对象作为全局总线
+// 借助beforeCreated钩子函数
 
 new Vue({
   el: "#root",
@@ -35,4 +49,7 @@ new Vue({
   // components: { App },
   // // 使用组件
   // template: '<App/>'
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  }
 })
