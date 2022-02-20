@@ -1,6 +1,7 @@
 <template>
   <!-- 模板 -->
   <div>
+    <h3>{{ title }}</h3>
     <TodoTop :addTodo="addTodo" />
     <TodoList
       :todoList="todoList"
@@ -29,12 +30,8 @@ export default {
   },
   data() {
     return {
-      todoList: [
-        { id: "1122", title: "哈哈", finished: true },
-        { id: "3363", title: "不能的人", finished: false },
-        { id: "6734", title: "5你说的发货", finished: true },
-        { id: "5221", title: "44很多原因", finished: false },
-      ],
+      title: "TodoList",
+      todoList: JSON.parse(localStorage.getItem("todoList")) || [],
     };
   },
   methods: {
@@ -56,6 +53,14 @@ export default {
     },
     deleteAllTodo() {
       this.todoList = this.todoList.filter((todo) => !todo.finished);
+    },
+  },
+  watch: {
+    todoList: {
+      deep: true,
+      handler(val) {
+        localStorage.setItem("todoList", JSON.stringify(val));
+      },
     },
   },
 };

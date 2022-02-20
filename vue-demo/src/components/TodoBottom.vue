@@ -3,7 +3,6 @@
     <input type="checkbox" v-model="isAll" />
     <span>已选{{ choosed }}/共{{ total }}</span>
     <button @click="handlerDelete()">删除</button>
-    <h4>-------------------------------------</h4>
   </div>
 </template>
 
