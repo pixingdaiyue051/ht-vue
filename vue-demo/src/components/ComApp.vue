@@ -35,7 +35,7 @@ export default {
     demo1() {
       console.log("demo1");
     },
-    // 第一个参数使用p1接收, 其他参数全部归到params数组内
+    // 第一个参数使用p1接收, ...表示其他参数全部归到params数组内
     demo2(p1, ...params) {
       console.log("demo2", p1, params);
     },
