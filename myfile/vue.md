@@ -25,3 +25,8 @@
     npm run serve         启动vue项目  
     npm run build         构建项目输出可执行文件  
     vue inspect > out.js  输出配置项到out.js文件
+1. ajax请求
+    - xhr new XMLHttpRequest() open send
+    - fetch 
+    - jquery $.get $.post $.ajax
+    - axios

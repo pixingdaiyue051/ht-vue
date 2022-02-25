@@ -5,32 +5,11 @@ import Vue from 'vue'
 
 import App from './App.vue'
 
+// 引入vue-router
+import router from './router';
+import 'bootstrap/dist/css/bootstrap.css'
+
 Vue.config.productionTip = false
-
-// 全局注册混合
-// import {mx1,mx2} from './scripts/mixin1.js'
-// Vue.mixin(mx1)
-// Vue.mixin(mx2)
-
-// 在vm创建之前先注册插件再使用
-// 默认会将Vue原型作为第一个参数传入插件
-// import p1 from './scripts/plugin1.js';
-// Vue.use(p1)
-
-// 全局事件总线 globle event bus
-// 1.所有的组件都可以无限制访问到
-// 2.总线上有$on $off $emit方法
-// 3.使用Vue的原型对象作为总线
-// 4.$on注册 $off销毁 $emit触发
-// 5.注册总线事件的组件的销毁之前一定要先销毁自己注册的自定义事件
-
-// 1.创建一个空VueCompont注册成全局总线
-// const d = Vue.extend({})
-// const bus = new d()
-// Vue.prototype.bus = bus
-
-// 2.直接使用root根vm对象作为全局总线
-// 借助beforeCreated钩子函数
 
 new Vue({
   el: "#root",
@@ -49,7 +28,55 @@ new Vue({
   // components: { App },
   // // 使用组件
   // template: '<App/>'
-  beforeCreate() {
-    Vue.prototype.$bus = this;
-  }
+  // 使用vue-router插件后就可以配置router
+  router
 })
+// 浏览器的历史记录 栈
+// 点击浏览器的后退按钮 指针向下推移一位
+// 点击浏览器的前进按钮 指针向上推移一位
+// push模式
+// 每一次点击都是入栈最新一条记录并指向栈顶指针
+// 如果当前指针没有指向栈顶而进行了入栈操作(即点击了新的按钮或者当前页面内跳转新的连接)
+// 那么先将当前指针(不包括自己)到栈顶指针全部出栈再进行一次入栈并指向栈顶操作
+
+// 入栈前
+// --- 8
+// --- 7
+// --- 6
+// --- 5
+// --> 4        (当前指针指向4此时入栈后栈的结构如下)
+// --- 3
+// --- 2
+// --- 1
+
+// 入栈后
+// --> 5        (之前的5678都会出栈 再新入栈一个5)  
+// --- 4        
+// --- 3
+// --- 2
+// --- 1
+
+// replace模式
+// 每一次点击都是先出栈再入栈最新一条记录并指向栈顶指针
+// 如果当前指针没有指向栈顶而进行了入栈操作(即点击了新的按钮或者当前页面内跳转新的连接)
+// 那么使用入栈替换当前指针 指针位置不变
+
+// 入栈前
+// --- 8
+// --- 7
+// --- 6
+// --- 5
+// --> 4        (当前指针指向4此时入栈后栈的结构如下)
+// --- 3
+// --- 2
+// --- 1
+
+// 入栈后
+// --- 8
+// --- 7
+// --- 6
+// --- 5
+// --> 4        (使用新的4替换旧的4)  
+// --- 3
+// --- 2
+// --- 1
