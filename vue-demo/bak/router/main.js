@@ -5,15 +5,9 @@ import Vue from 'vue'
 
 import App from './App.vue'
 
-// 全量引入
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
-// Vue.use(UI);
-
-// 按需引入
-import { Button, Input } from 'element-ui';
-Vue.use(Button);
-Vue.use(Input);
+// 引入vue-router
+import router from './router';
+import 'bootstrap/dist/css/bootstrap.css'
 
 Vue.config.productionTip = false
 
@@ -34,4 +28,6 @@ new Vue({
   // components: { App },
   // // 使用组件
   // template: '<App/>'
+  // 使用vue-router插件后就可以配置router 所有的组件都有$router和$route
+  router
 })

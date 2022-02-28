@@ -47,6 +47,8 @@
         >
           {{ msg.title }}
         </router-link> -->
+        <button @click="push(msg)">push</button>
+        <button @click="replace(msg)">replace</button>
       </li>
     </ul>
     <router-view></router-view>
@@ -94,6 +96,29 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    push(msg) {
+      // 使用router动态跳转具体的业务操作
+      this.$router
+        .push({
+          name: "detail",
+          query: {
+            data: msg.data,
+          },
+        })
+        .catch((err) => console.log(err));
+    },
+    replace(msg) {
+      this.$router
+        .replace({
+          name: "detail",
+          query: {
+            data: msg.data,
+          },
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>

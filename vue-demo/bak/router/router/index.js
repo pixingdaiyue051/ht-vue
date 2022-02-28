@@ -11,18 +11,30 @@ import Message from '../pages/Message'
 import News from '../pages/News'
 import Detail from '../pages/Detail'
 
-export default new VueRouter({
+function authed() {
+    const x = localStorage.getItem('abc');
+    return x && x === 'abc';
+}
+
+const router = new VueRouter({
+    // 路由工作模式 默认hash 可选hash history
+    // hash模式 访问路径以/#/开始 之后的路径不会传入服务器作为访问路由接收
+    mode: 'history',
     routes: [
         {
+            name: 'about',
             path: '/about',   // route的跳转连接 标识 /时必须的(on-nested routes must include a leading slash character)
             component: About, // 跳转的具体组件
+            meta: { needAuth: false } 
         },
         {
+            name: 'home',
             path: '/home',
             component: Home,
             // 嵌套子路由
             children: [
                 {
+                    name: 'message',
                     path: 'message',   // 子路由不能加/
                     component: Message,
                     children: [
@@ -47,10 +59,47 @@ export default new VueRouter({
                     ]
                 },
                 {
+                    name: 'news',
                     path: 'news',
                     component: News,
+                    meta: { needAuth: true }, // meta是路由元数据 可以配置该路由的自定义数据
+                    // 单独设置前置路由
+                    // 执行顺序在全局前置路由之后
+                    beforeEnter(to, from, next)  {
+                        console.log('news前置路由', to, from);
+                        if (authed()) {
+                            next();
+                        }
+                    },
                 },
             ]
         },
     ]
 })
+
+// 全局前置路由 初始化和每次跳转其他路由前都会调用
+// to 目标路由 对象
+// from 源路由 对象
+// next 放行 函数
+router.beforeEach((to, from, next) => {
+    console.log('全局前置路由', to, from);
+    // const needAuth = to.path.startsWith('/home');
+    const needAuth = to.meta.needAuth;
+    if (!needAuth) {
+        next();
+    }
+    if (authed()) {
+        next();
+    }
+})
+
+// 全局后置路由 初始化和每次跳转其他路由后都会调用
+// to 目标路由 对象
+// from 源路由 对象
+// 如果路由跳转失败不会触发
+router.afterEach((to, from) => {
+    console.log('全局后置路由', to, from);
+    document.title = to.name || document.title;
+})
+
+export default router

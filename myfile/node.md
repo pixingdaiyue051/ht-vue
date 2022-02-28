@@ -6,6 +6,7 @@
     npm install xx  简写 npm i xx  安装xx最新版本  
     npm i xx@x.x.x  安装xx指定版本  
     npm i  直接安装package.json这种全部依赖包  
+    npm i xx --save 简写 npm i xx -S    安装依赖包  
     npm i xx --save-dev 简写 npm i xx -D    安装开发环境包  
     npm i cnpm -g --registry=https://registry.npm.taobao.org    安装阿里镜像包   
     npm uninstall xx 简写 npm un xx  删除包  
