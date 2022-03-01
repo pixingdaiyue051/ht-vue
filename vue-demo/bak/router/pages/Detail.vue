@@ -19,5 +19,8 @@ export default {
   name: "Detail",
   // props: ["id", "title"],
   props: ["data"],
+  mounted() {
+    console.log('Detail mounted')
+  },
 };
 </script>

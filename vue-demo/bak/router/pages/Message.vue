@@ -120,5 +120,8 @@ export default {
         .catch((err) => console.log(err));
     },
   },
+  mounted() {
+    console.log('Message mounted')
+  },
 };
 </script>
