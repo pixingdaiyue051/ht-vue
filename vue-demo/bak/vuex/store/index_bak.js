@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 // 使用Vuex 在vm 和 vc上都由$store
 Vue.use(Vuex)
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
 // 接收所有dispatch请求 加入判断或增强相关的业务逻辑
 const actions = {

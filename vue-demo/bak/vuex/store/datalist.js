@@ -15,7 +15,7 @@ export default {
         ADD_ITEM(state) {
             state.arrPoint.push(nanoid());
         },
-        ADD_RANDOM_ITEM(state,value) {
+        ADD_RANDOM_ITEM(state, value) {
             state.arrPoint.push(value);
         },
     },

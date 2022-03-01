@@ -1,6 +1,6 @@
 export default {
-    namespaced:true, // 指定命名空间
-    actions:{
+    namespaced: true, // 指定命名空间 页面上引入是需要使用该命名空间作为前缀才能使用
+    actions: {
         incrOdd(context, value) {
             if (context.state.sum % 2) {
                 context.commit('INCR', value);
@@ -10,7 +10,7 @@ export default {
             setTimeout(() => context.commit('INCR', value), 1000);
         },
     },
-    mutations:{
+    mutations: {
         INCR(state, value) {
             state.sum += value;
         },
@@ -18,12 +18,12 @@ export default {
             state.sum -= value;
         },
     },
-    state:{
+    state: {
         sum: 0,
         strPoint: 'hello',
         objPoint: { id: '312' },
     },
-    getters:{
+    getters: {
         bigSum(state) {
             return state.sum * 10;
         },
