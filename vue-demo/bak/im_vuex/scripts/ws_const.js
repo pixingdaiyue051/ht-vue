@@ -1,6 +1,6 @@
 export default {
     // 默认地址
-    WS_URL: "ws://127.0.0.1/wsapp",
+    WS_URL: "ws://127.0.0.1:8081/wsapp",
     // 心跳频率 30s
     HEART_BEAT_FREQ: 30000,
     // 最大连接次数

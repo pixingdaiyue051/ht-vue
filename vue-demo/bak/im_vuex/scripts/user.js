@@ -7,7 +7,6 @@ export default {
         openWs(state, obj) {
             state.ws = obj.ws;
             state.userId = obj.userId;
-            console.log(obj);
             const message = {
                 value: obj.userId,
                 code: "5000",

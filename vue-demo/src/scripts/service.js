@@ -28,17 +28,10 @@ export default {
                 });
             }
             if ("4101" == json.code) {
-                json.data
-                    .filter((e) => {
-                        const idx = state.userList.findIndex(
-                            (e1) => e.sender === e1.sender
-                        );
-                        return idx < 0;
-                    })
-                    .forEach((e) => {
-                        e.id = nanoid();
-                        state.userList.push(e);
-                    });
+                json.data.forEach((e) => {
+                    e.id = nanoid();
+                    state.userList.push(e);
+                });
             }
             if ("4102" == json.code) {
                 const idx = state.userList.findIndex(

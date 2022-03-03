@@ -9,38 +9,38 @@ module.exports = {
       template: 'public/index.html'
     }
   },
-  devServer: {
-    // 访问域名
-    // host: 'eee222',
-    // 开启时的访问端口
-    // port: 8089,
-    // 开启代理服务器
-    proxy: {
-      // '/aws': {
-      //   target: 'http://localhost/wsapp',
-      //   ws: true, // 支持提升为websocket请求 默认true
-      //   changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
-      //   pathRewrite: {
-      //     '^/aws': ''
-      //   }
-      // },
-      '/a80': {
-        target: 'http://localhost:8510/boot',
-        ws: false,
-        changeOrigin: false,
-        pathRewrite: {
-          '^/a80': ''
-        }
-      },
-      '/a81': {
-        target: 'http://localhost:8081/boot',
-        ws: false,
-        pathRewrite: {
-          '^/a81': ''
-        }
-      }
-    }
-  }
+  // devServer: {
+  //   // 访问域名
+  //   // host: 'eee222',
+  //   // 开启时的访问端口
+  //   // port: 8089,
+  //   // 开启代理服务器
+  //   proxy: {
+  //     // '/aws': {
+  //     //   target: 'http://localhost/wsapp',
+  //     //   ws: true, // 支持提升为websocket请求 默认true
+  //     //   changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
+  //     //   pathRewrite: {
+  //     //     '^/aws': ''
+  //     //   }
+  //     // },
+  //     '/a80': {
+  //       target: 'http://localhost:8510/boot',
+  //       ws: false,
+  //       changeOrigin: false,
+  //       pathRewrite: {
+  //         '^/a80': ''
+  //       }
+  //     },
+  //     '/a81': {
+  //       target: 'http://localhost:8081/boot',
+  //       ws: false,
+  //       pathRewrite: {
+  //         '^/a81': ''
+  //       }
+  //     }
+  //   }
+  // }
 }
 // "vue": {
 //   "pages": {

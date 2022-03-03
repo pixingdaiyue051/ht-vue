@@ -1,17 +1,15 @@
 <template>
   <div class="left-bar">
-    <ul>
-      <li v-show="userList.length"
+    <ul v-if="userList.length">
+      <li
         v-for="item in userList"
         :key="item.id"
         @click="chooseUser(item)"
       >
         {{ item.name }}
       </li>
-      <li v-show="serviceName">
-        已连接到{{ serviceName }}
-      </li>
     </ul>
+    <span v-if="serviceName">已连接到{{ serviceName }}</span>
   </div>
 </template>
 

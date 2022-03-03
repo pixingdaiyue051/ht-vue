@@ -36,10 +36,10 @@ export default {
       // 连接关闭函数
       this.ws.onclose = () => {
         console.log("连接已关闭...");
+        clearTimeout(this.tt);
         if (this.ended || ++this.limit > WsConst.MAX_CONN_LIMIT) {
           return;
         }
-        clearTimeout(this.tt);
         setTimeout(() => this.conn(), WsConst.RECONN_FREQ);
       };
       // 连接错误函数
