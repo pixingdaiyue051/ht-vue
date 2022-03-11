@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .body-bg-color {
+            background-color: #362323a8;
+        }
+        a {
+            color: #362323a8
+        }
+        input {
+            background-color: #362323a8
+        }
+        button {
+            background-color: #362323a8
+        }
+    </style>
+</head>
+
+<body class="body-bg-color">
+    <input id="ipt" name="ipt" class="cls" value="something is changed"></input>
+    <input id="ipt1" name="ipt1" class="cls" value="something is changed1111"></input>
+    <input id="ipt2" name="ipt2" class="cls" value="something is changed2222"></input>
+    <button id="btn" name="btn" class="clsBtn">make</button>
+    <button id="btn1" name="btn1" class="clsBtn">make</button>
+    <button id="btn2" name="btn2" class="clsBtn">make</button>
+
+    <!-- 如果使用了src引入其他外部js文件 标签内就不能再写js代码 -->
+    <!-- 页面会按照代码顺序依次执行 -->
+    <!-- <script src="./1.js"></script> -->
+    <script>
+
+        // 页面加载完成所有js代码执行完成后再执行
+        window.onload = function () {
+            ipt.onclick = function () {
+                console.log('input has been clicked');
+            }
+        }
+        // 根据id获取标签 唯一的一个 如果有多个相同id的标签只取第一个
+        let ipt = document.getElementById('ipt');
+        console.log(ipt, ipt.nodeType, ipt.nodeName, ipt.nodeValue, ipt.tagName, ipt.tabIndex);
+        // 根据class属性获取标签集合 返回一个数组
+        let clss = document.getElementsByClassName('cls');
+        console.log(clss);
+        // 根据标签名获取标签集合 返回一个数组
+        let btns = document.getElementsByTagName('button');
+        console.log(btns);
+        // 根据name属性获取标签集合 返回一个数组
+        let nameIpt = document.getElementsByName('ipt2');
+        // console.log(nameIpt, nameIpt.nodeType, nameIpt.nodeName, nameIpt.nodeValue, nameIpt.tagName, nameIpt.tabIndex);
+
+        let cds = document.body.childNodes;
+        // console.log(cds);
+
+        let c =document.querySelectorAll('.clsBtn');
+        console.log(c);
+    </script>
+</body>
+
+</html>
