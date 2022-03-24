@@ -18,14 +18,14 @@ v = new String('gs');
 v = null;
 
 
-function fnt() {
+function Fnt() {
 
 }
 
-v = new fnt()
+v = new Fnt()
 
 const _proto = v.__proto__;
 console.log(_proto, v)
 
-const _pt = fnt.prototype;
-console.log(_proto === _pt);
+const _pt = Fnt.prototype;
+console.log(_proto === _pt, _pt.__proto__);

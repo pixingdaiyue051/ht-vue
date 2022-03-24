@@ -10,12 +10,15 @@
         .body-bg-color {
             background-color: #362323a8;
         }
+
         a {
             color: #362323a8
         }
+
         input {
             background-color: #362323a8
         }
+
         button {
             background-color: #362323a8
         }
@@ -29,10 +32,11 @@
     <button id="btn" name="btn" class="clsBtn">make</button>
     <button id="btn1" name="btn1" class="clsBtn">make</button>
     <button id="btn2" name="btn2" class="clsBtn">make</button>
-
+    
     <!-- 如果使用了src引入其他外部js文件 标签内就不能再写js代码 -->
     <!-- 页面会按照代码顺序依次执行 -->
     <!-- <script src="./1.js"></script> -->
+    <!-- <script src="./proto.js"></script> -->
     <script>
 
         // 页面加载完成所有js代码执行完成后再执行
@@ -41,24 +45,37 @@
                 console.log('input has been clicked');
             }
         }
-        // 根据id获取标签 唯一的一个 如果有多个相同id的标签只取第一个
+        // 根据id获取标签 唯一的一个 如果有多个相同id的标签只取第一个 返回一个对象
         let ipt = document.getElementById('ipt');
-        console.log(ipt, ipt.nodeType, ipt.nodeName, ipt.nodeValue, ipt.tagName, ipt.tabIndex);
-        // 根据class属性获取标签集合 返回一个数组
+        // console.log(ipt, ipt.nodeType, ipt.nodeName, ipt.nodeValue, ipt.tagName, ipt.tabIndex);
+        console.log(ipt, typeof ipt);
+        // 根据class属性获取标签集合 返回一个对象 每个查找到的节点都是该对象的一个属性(已数字排序)
         let clss = document.getElementsByClassName('cls');
-        console.log(clss);
-        // 根据标签名获取标签集合 返回一个数组
+        console.log(clss, typeof clss);
+        // 根据标签名获取标签集合 返回一个对象 每个查找到的节点都是该对象的一个属性(已数字排序)
         let btns = document.getElementsByTagName('button');
-        console.log(btns);
-        // 根据name属性获取标签集合 返回一个数组
+        console.log(btns, typeof btns);
+        // 根据name属性获取标签集合 返回一个对象 每个查找到的节点都是该对象的一个属性(已数字排序)
         let nameIpt = document.getElementsByName('ipt2');
-        // console.log(nameIpt, nameIpt.nodeType, nameIpt.nodeName, nameIpt.nodeValue, nameIpt.tagName, nameIpt.tabIndex);
+        console.log(nameIpt, typeof nameIpt);
 
-        let cds = document.body.childNodes;
+        // let cds = document.body.childNodes;
         // console.log(cds);
 
-        let c =document.querySelectorAll('.clsBtn');
-        console.log(c);
+        // 使用css选择器 返回一个对象 如果有多个只取第一个
+        let c = document.querySelector('.clsBtn');
+        console.log(c, typeof c);
+
+        // 使用css选择器 返回一个对象 每个查找到的节点都是该对象的一个属性(已数字排序)
+        let cs = document.querySelectorAll('.clsBtn');
+        console.log(cs, typeof cs);
+        console.log("第一种遍历方法")
+        for (let v1 = 0; v1 < cs.length; v1++) {
+            console.log(cs[v1]);
+        }
+        console.log("第二种遍历方法")
+        cs.forEach(c1 => { console.log(c1) });
+
     </script>
 </body>
 

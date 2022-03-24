@@ -24,7 +24,7 @@ console.log(v instanceof Fnt1);
 // 可以使用 instanceof 关键字查看一个实例是否是某个类的实例
 v = new Fnt1();
 console.log(v instanceof Fnt1);
-
+console.log(v.id, v.name);
 
 const _type1 = typeof v;
 console.log(typeof _type1, _type1, v);

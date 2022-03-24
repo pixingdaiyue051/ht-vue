@@ -15,6 +15,10 @@ console.log(obj.k, obj['n'], obj.t);
 for (let v in obj) {
     console.log(v, obj[v]);
 }
+// // 不能使用这种方式遍历对象的属性
+// for(let v of obj) {
+//     console.log(v);
+// }
 
 // 检查obj是否有n这个属性
 console.log("n" in obj);
