@@ -41,7 +41,7 @@ export default {
     },
     post(uri1, params, fnt = (res) => console.log(res)) {
       axios
-        .post(`http://localhost:8080/mid/${uri1}`, params, this.config)
+        .post(`/mid/${uri1}`, params, this.config)
         .then((res) => {
           console.log(res);
           fnt(res.data);

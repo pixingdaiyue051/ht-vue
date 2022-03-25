@@ -79,7 +79,7 @@ export default {
     },
     post(uri1, params, config, fnt = (res) => console.log(res)) {
       axios
-        .post(`http://localhost:8080/a80/${uri1}`, params, config)
+        .post(`/an/${uri1}`, params, config)
         .then((res) => {
           console.log(res);
           fnt(res.data);
