@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input class="inp-bg-color" v-model="iptText" />
+    <input class="inp-bg-color" v-model="url" />
     <button @click="test">测试</button>
     <br />
     <input
@@ -26,13 +26,17 @@ export default {
   name: "Boot",
   data() {
     return {
-      iptText: "",
+      url: "",
       fileList: [],
     };
   },
   methods: {
     test() {
-      this.post("", this.iptText);
+      let uri = this.url;
+      if (!uri) {
+        uri = '/boot/test/one'
+      }
+      this.post(uri);
     },
     changeFile(e) {
       const files = e.target.files;
@@ -65,7 +69,7 @@ export default {
       this.fileList.forEach((item) => {
         let form = new FormData();
         form.append("file", item.file);
-        this.post("upload", form, {
+        this.post("/viva/upload", form, {
           headers: {
             "Content-Type": "multipart/form-data",
             "file-suffix": item.fileSuffix,
@@ -77,9 +81,9 @@ export default {
     deleteFile(id) {
       this.fileList = this.fileList.filter((val) => val.id !== id);
     },
-    post(uri1, params, config, fnt = (res) => console.log(res)) {
+    post(uri, params, config, fnt = (res) => console.log(res)) {
       axios
-        .post(`/an/${uri1}`, params, config)
+        .post(uri, params, config)
         .then((res) => {
           console.log(res);
           fnt(res.data);

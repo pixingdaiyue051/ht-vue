@@ -17,20 +17,20 @@ module.exports = {
     // port: 8089,
     // 开启代理服务器
     proxy: {
-      // '/boot': {
-      //   target: 'http://127.0.0.1:8510',
-      //   ws: true, // 支持提升为websocket请求 默认true
-      //   changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
-      //   pathRewrite: {
-      //     '^/boot': ''
-      //   }
-      // },
-      '/an': {
+      '/boot': {
+        target: 'http://127.0.0.1:7210',
+        ws: true, // 支持提升为websocket请求 默认true
+        changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
+        pathRewrite: {
+          '^/boot': ''
+        }
+      },
+      '/viva': {
         target: 'http://127.0.0.1:7132',
         ws: false,
         changeOrigin: false,
         pathRewrite: {
-          '^/an': ''
+          '^/viva': ''
         }
       },
       '/mid': {
