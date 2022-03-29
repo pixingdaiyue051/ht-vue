@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件对象</title>
+    <style>
+        .body-bg-color {
+            background-color: #362323a8;
+        }
+
+        a {
+            color: #362323a8
+        }
+
+        input {
+            background-color: #362323a8
+        }
+
+        button {
+            background-color: #362323a8
+        }
+    </style>
+</head>
+
+<body class="body-bg-color">
+    
+    <div id="areaDiv" style="width: 200px; height: 200px; border: 2px solid #000;"></div>
+    <div id="msgDiv" style="width: 100px; height: 100px; border: 2px solid #000;"></div>
+
+    <script>
+
+        const areaDiv = document.getElementById("areaDiv");
+        const msgDiv = document.getElementById("msgDiv");
+        // 绑定鼠标在其上移动事件
+        // 该方法由浏览器执行 每次执行时都会传入一个当前事件对象作为实参
+        areaDiv.onmousemove = function(evt) {
+            console.log(evt);
+            msgDiv.innerHTML = `x=${evt.x};y=${evt.y}`;
+        }
+
+    </script>
+</body>
+
+</html>
