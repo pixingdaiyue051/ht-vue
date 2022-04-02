@@ -34,7 +34,7 @@ export default {
     test() {
       let uri = this.url;
       if (!uri) {
-        uri = '/boot/test/one'
+        uri = "/boot/test/one";
       }
       this.post(uri);
     },
@@ -63,6 +63,7 @@ export default {
     },
     sendFile() {
       if (!this.fileList.length) {
+        this.post("/viva")
         return;
       }
       console.log(this.fileList);
@@ -81,16 +82,14 @@ export default {
     deleteFile(id) {
       this.fileList = this.fileList.filter((val) => val.id !== id);
     },
-    post(uri, params, config, fnt = (res) => console.log(res)) {
+    post(uri, params, config, fnt = (res) => console.log(res, typeof(res))) {
       axios
         .post(uri, params, config)
         .then((res) => {
-          console.log(res);
+          console.log(res, typeof(res));
           fnt(res.data);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     },
   },
 };
