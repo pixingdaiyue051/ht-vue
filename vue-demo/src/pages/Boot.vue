@@ -63,7 +63,7 @@ export default {
     },
     sendFile() {
       if (!this.fileList.length) {
-        this.post("/viva")
+        this.post("/viva/")
         return;
       }
       console.log(this.fileList);
