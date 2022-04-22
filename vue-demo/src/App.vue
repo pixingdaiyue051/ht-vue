@@ -24,7 +24,7 @@
 export default {
   name: "App",
   mounted() {
-    console.log("App mounted");
+    console.log("App mounted", this);
     console.log("this.$router", this.$router);
     console.log("this.$store", this.$store);
   },

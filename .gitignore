@@ -3,10 +3,13 @@ target
 .classpath
 .project
 .settings
+.vscode
 .idea
 *.iws
 *.iml
 *.ipr
 out
+dist
 node_modules
 test
+package-lock.json
