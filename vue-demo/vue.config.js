@@ -18,7 +18,8 @@ module.exports = {
     // 开启代理服务器
     proxy: {
       '/boot': {
-        target: 'http://127.0.0.1:7210',
+        // target: 'http://127.0.0.1:7210',
+        target: 'http://8.136.146.58:8888/boot',
         ws: true, // 支持提升为websocket请求 默认true
         changeOrigin: true, // 改成虚拟请求host 以配合与服务器host一致 默认true
         pathRewrite: {
@@ -26,7 +27,8 @@ module.exports = {
         }
       },
       '/viva': {
-        target: 'http://127.0.0.1:7132',
+        // target: 'http://127.0.0.1:7132',
+        target: 'http://8.136.146.58:8888/viva',
         ws: false,
         changeOrigin: false,
         pathRewrite: {

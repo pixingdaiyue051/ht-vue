@@ -15,6 +15,7 @@
         {{ item.filename }}<button @click="deleteFile(item.id)">-</button>
       </li>
     </ul>
+    <img :src="filepath" alt=""/>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ export default {
     return {
       url: "",
       fileList: [],
+      filepath:""
     };
   },
   methods: {
@@ -75,6 +77,9 @@ export default {
             "Content-Type": "multipart/form-data",
             "file-suffix": item.fileSuffix,
           },
+        }, (data) => {
+          console.log(data);
+          this.filepath = `/img/${data.msg}`;
         });
       });
       this.fileList = [];
@@ -82,11 +87,10 @@ export default {
     deleteFile(id) {
       this.fileList = this.fileList.filter((val) => val.id !== id);
     },
-    post(uri, params, config, fnt = (res) => console.log(res, typeof(res))) {
+    post(uri, params, config, fnt = (data) => console.log(data, typeof(data))) {
       axios
         .post(uri, params, config)
         .then((res) => {
-          console.log(res, typeof(res));
           fnt(res.data);
         })
         .catch((err) => console.log(err));
