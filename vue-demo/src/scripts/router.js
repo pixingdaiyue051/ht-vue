@@ -11,6 +11,7 @@ import Boot from '../pages/Boot.vue'
 import Home from '../pages/Home.vue'
 import Im from '../components/Im.vue'
 import Ws from '../components/Ws.vue'
+import Rtc from '../components/Rtc.vue'
 
 const router = new VueRouter({
     // 路由工作模式 默认hash 可选hash history
@@ -60,6 +61,11 @@ const router = new VueRouter({
                     // }
                 },
             ]
+        },
+        {
+            name: 'rtc',
+            path: '/rtc',   // route的跳转连接 标识 /时必须的(on-nested routes must include a leading slash character)
+            component: Rtc, // 跳转的具体组件
         },
     ]
 })

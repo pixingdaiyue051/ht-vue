@@ -16,6 +16,10 @@
       <span>测试websocket</span>
       <router-link to="/home">Home</router-link>
     </p>
+    <p>
+      <span>测试webrtc</span>
+      <router-link to="/rtc">Rtc</router-link>
+    </p>
     <router-view></router-view>
   </div>
 </template>
