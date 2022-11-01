@@ -64,6 +64,7 @@ export default {
                     content: msg,
                     sender: state.serviceId,
                     receiver: state.userId,
+                    extras: ""
                 },
             };
             state.ws.send(JSON.stringify(message));

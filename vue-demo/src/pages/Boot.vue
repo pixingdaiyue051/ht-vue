@@ -15,7 +15,7 @@
         {{ item.filename }}<button @click="deleteFile(item.id)">-</button>
       </li>
     </ul>
-    <img :src="filepath" alt=""/>
+    <img :src="filepath" alt="" />
   </div>
 </template>
 
@@ -29,7 +29,8 @@ export default {
     return {
       url: "",
       fileList: [],
-      filepath:""
+      filepath: "",
+      vodpath: "",
     };
   },
   methods: {
@@ -65,29 +66,34 @@ export default {
     },
     sendFile() {
       if (!this.fileList.length) {
-        this.post("/viva/")
+        this.post("/viva/");
         return;
       }
       console.log(this.fileList);
       this.fileList.forEach((item) => {
         let form = new FormData();
         form.append("file", item.file);
-        this.post("/viva/upload", form, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "file-suffix": item.fileSuffix,
+        this.post(
+          "/viva/upload",
+          form,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "file-suffix": item.fileSuffix,
+            },
           },
-        }, (data) => {
-          console.log(data);
-          this.filepath = `/img/${data.msg}`;
-        });
+          (data) => {
+            console.log(data);
+            this.filepath = `/bin/${data.msg}`;
+          }
+        );
       });
       this.fileList = [];
     },
     deleteFile(id) {
       this.fileList = this.fileList.filter((val) => val.id !== id);
     },
-    post(uri, params, config, fnt = (data) => console.log(data, typeof(data))) {
+    post(uri, params, config, fnt = (data) => console.log(data, typeof data)) {
       axios
         .post(uri, params, config)
         .then((res) => {
